@@ -1,23 +1,33 @@
 #
 # Conditional build:
 %bcond_without	octave	# Octave (MATLAB) module
+%bcond_without	python	# Python (any) interface
+%bcond_without	python2	# Python 2.x interface
+%bcond_without	python3	# Python 3.x interface
 #
+%if %{without python}
+%undefine	with_python2
+%undefine	with_python3
+%endif
 Summary:	LIBLINEAR - a Library for Large Linear Classification
 Summary(pl.UTF-8):	LIBLINEAR - biblioteka do liniowej klasyfikacji dużych danych
 Name:		liblinear
-Version:	2.1
-Release:	3
+Version:	2.30
+Release:	1
 License:	BSD
 Group:		Libraries
-Source0:	http://www.csie.ntu.edu.tw/~cjlin/liblinear/%{name}-%{version}.tar.gz
-# Source0-md5:	0d87a71d054ed17c5ee7656efba06e89
+Source0:	https://www.csie.ntu.edu.tw/~cjlin/liblinear/%{name}-%{version}.tar.gz
+# Source0-md5:	5c807aebd62c3eca72b809d66e1432e8
 Patch0:		%{name}-python.patch
 Patch1:		%{name}-make.patch
 Patch2:		%{name}-matlab.patch
-URL:		http://www.csie.ntu.edu.tw/~cjlin/liblinear/
+URL:		https://www.csie.ntu.edu.tw/~cjlin/liblinear/
 BuildRequires:	blas-devel
 BuildRequires:	libstdc++-devel
 %{?with_octave:BuildRequires:	octave-devel}
+%{?with_python2:BuildRequires:	python-devel >= 1:2.6}
+%{?with_python3:BuildRequires:	python3-devel >= 1:3.2}
+BuildRequires:	rpmbuild(macros) >= 1.507
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		octave_oct_dir	%(octave-config --oct-site-dir)
@@ -64,17 +74,30 @@ MATLAB/Octave interface for LIBLINEAR library.
 Interfejs MATLAB-a/Octave do biblioteki LIBLINEAR.
 
 %package -n python-liblinear
-Summary:	Python interface for LIBLINEAR library
-Summary(pl.UTF-8):	Interfejs Pythona do biblioteki LIBLINEAR
+Summary:	Python 2 interface for LIBLINEAR library
+Summary(pl.UTF-8):	Interfejs Pythona 2 do biblioteki LIBLINEAR
 Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
 Requires:	python-libs
 
 %description -n python-liblinear
-Python interface for LIBLINEAR library.
+Python 2 interface for LIBLINEAR library.
 
 %description -n python-liblinear -l pl.UTF-8
-Interfejs Pythona do biblioteki LIBLINEAR.
+Interfejs Pythona 2 do biblioteki LIBLINEAR.
+
+%package -n python3-liblinear
+Summary:	Python 3 interface for LIBLINEAR library
+Summary(pl.UTF-8):	Interfejs Pythona 3 do biblioteki LIBLINEAR
+Group:		Libraries/Python
+Requires:	%{name} = %{version}-%{release}
+Requires:	python3-libs
+
+%description -n python3-liblinear
+Python 3 interface for LIBLINEAR library.
+
+%description -n python3-liblinear -l pl.UTF-8
+Interfejs Pythona 3 do biblioteki LIBLINEAR.
 
 %prep
 %setup -q
@@ -101,18 +124,34 @@ Interfejs Pythona do biblioteki LIBLINEAR.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir},%{py_sitescriptdir}}
+install -d $RPM_BUILD_ROOT{%{_bindir},%{_libdir},%{_includedir}}
 
 install liblinear.so.* $RPM_BUILD_ROOT%{_libdir}
 ln -sf $(basename $RPM_BUILD_ROOT%{_libdir}/liblinear.so.*) $RPM_BUILD_ROOT%{_libdir}/liblinear.so
 cp -p linear.h tron.h $RPM_BUILD_ROOT%{_includedir}
 install train $RPM_BUILD_ROOT%{_bindir}/liblinear-train
 install predict $RPM_BUILD_ROOT%{_bindir}/liblinear-predict
-cp -p python/*.py $RPM_BUILD_ROOT%{py_sitescriptdir}
 
 %if %{with octave}
 install -d $RPM_BUILD_ROOT%{octave_oct_dir}/liblinear
 install matlab/*.mex $RPM_BUILD_ROOT%{octave_oct_dir}/liblinear
+%endif
+
+%if %{with python2}
+install -d $RPM_BUILD_ROOT%{py_sitescriptdir}
+cp -p python/*.py $RPM_BUILD_ROOT%{py_sitescriptdir}
+
+%py_comp $RPM_BUILD_ROOT%{py_sitescriptdir}
+%py_ocomp $RPM_BUILD_ROOT%{py_sitescriptdir}
+%py_postclean
+%endif
+
+%if %{with python3}
+install -d $RPM_BUILD_ROOT%{py3_sitescriptdir}
+cp -p python/*.py $RPM_BUILD_ROOT%{py3_sitescriptdir}
+
+%py3_comp $RPM_BUILD_ROOT%{py3_sitescriptdir}
+%py3_ocomp $RPM_BUILD_ROOT%{py3_sitescriptdir}
 %endif
 
 %clean
@@ -144,7 +183,21 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{octave_oct_dir}/liblinear/train.mex
 %endif
 
+%if %{with python2}
 %files -n python-liblinear
 %defattr(644,root,root,755)
-%{py_sitescriptdir}/liblinear.py
-%{py_sitescriptdir}/liblinearutil.py
+%{py_sitescriptdir}/commonutil.py[co]
+%{py_sitescriptdir}/liblinear.py[co]
+%{py_sitescriptdir}/liblinearutil.py[co]
+%endif
+
+%if %{with python3}
+%files -n python3-liblinear
+%defattr(644,root,root,755)
+%{py3_sitescriptdir}/commonutil.py
+%{py3_sitescriptdir}/liblinear.py
+%{py3_sitescriptdir}/liblinearutil.py
+%{py3_sitescriptdir}/__pycache__/commonutil.cpython-*.py[co]
+%{py3_sitescriptdir}/__pycache__/liblinear.cpython-*.py[co]
+%{py3_sitescriptdir}/__pycache__/liblinearutil.cpython-*.py[co]
+%endif
