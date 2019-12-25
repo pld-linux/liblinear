@@ -27,6 +27,7 @@ BuildRequires:	libstdc++-devel
 %{?with_octave:BuildRequires:	octave-devel}
 %{?with_python2:BuildRequires:	python-devel >= 1:2.6}
 %{?with_python3:BuildRequires:	python3-devel >= 1:3.2}
+BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.507
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -78,7 +79,7 @@ Summary:	Python 2 interface for LIBLINEAR library
 Summary(pl.UTF-8):	Interfejs Pythona 2 do biblioteki LIBLINEAR
 Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
-Requires:	python-libs
+Requires:	python-libs >= 1:2.6
 
 %description -n python-liblinear
 Python 2 interface for LIBLINEAR library.
@@ -91,7 +92,7 @@ Summary:	Python 3 interface for LIBLINEAR library
 Summary(pl.UTF-8):	Interfejs Pythona 3 do biblioteki LIBLINEAR
 Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
-Requires:	python3-libs
+Requires:	python3-libs >= 1:3.2
 
 %description -n python3-liblinear
 Python 3 interface for LIBLINEAR library.
@@ -186,6 +187,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files -n python-liblinear
 %defattr(644,root,root,755)
+%doc python/README
 %{py_sitescriptdir}/commonutil.py[co]
 %{py_sitescriptdir}/liblinear.py[co]
 %{py_sitescriptdir}/liblinearutil.py[co]
@@ -194,6 +196,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-liblinear
 %defattr(644,root,root,755)
+%doc python/README
 %{py3_sitescriptdir}/commonutil.py
 %{py3_sitescriptdir}/liblinear.py
 %{py3_sitescriptdir}/liblinearutil.py
