@@ -80,6 +80,7 @@ Summary(pl.UTF-8):	Interfejs Pythona 2 do biblioteki LIBLINEAR
 Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
 Requires:	python-libs >= 1:2.6
+BuildArch:	noarch
 
 %description -n python-liblinear
 Python 2 interface for LIBLINEAR library.
@@ -93,6 +94,7 @@ Summary(pl.UTF-8):	Interfejs Pythona 3 do biblioteki LIBLINEAR
 Group:		Libraries/Python
 Requires:	%{name} = %{version}-%{release}
 Requires:	python3-libs >= 1:3.2
+BuildArch:	noarch
 
 %description -n python3-liblinear
 Python 3 interface for LIBLINEAR library.
