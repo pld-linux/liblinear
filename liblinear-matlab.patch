@@ -1,19 +1,19 @@
---- liblinear-2.30/matlab/Makefile.orig	2019-12-25 13:15:35.331813000 +0100
-+++ liblinear-2.30/matlab/Makefile	2019-12-25 13:20:29.616885387 +0100
-@@ -21,14 +21,14 @@
+--- liblinear-2.45/matlab/Makefile.orig	2023-01-17 21:05:21.933302902 +0100
++++ liblinear-2.45/matlab/Makefile	2023-01-17 21:06:23.029638581 +0100
+@@ -22,14 +22,14 @@ octave:
  binary: train.$(MEX_EXT) predict.$(MEX_EXT) libsvmread.$(MEX_EXT) libsvmwrite.$(MEX_EXT)
  
- train.$(MEX_EXT): train.c ../linear.h ../tron.cpp ../linear.cpp linear_model_matlab.c \
+ train.$(MEX_EXT): train.c ../linear.h ../newton.cpp ../linear.cpp linear_model_matlab.c \
 -		../blas/daxpy.c ../blas/ddot.c ../blas/dnrm2.c ../blas/dscal.c
 +		$(nil)
- 	$(MEX) $(MEX_OPTION) train.c ../tron.cpp ../linear.cpp linear_model_matlab.c \
+ 	$(MEX) $(MEX_OPTION) train.c ../newton.cpp ../linear.cpp linear_model_matlab.c \
 -		../blas/daxpy.c ../blas/ddot.c ../blas/dnrm2.c ../blas/dscal.c
 +		-lblas
  
- predict.$(MEX_EXT): predict.c ../linear.h ../tron.cpp ../linear.cpp linear_model_matlab.c \
+ predict.$(MEX_EXT): predict.c ../linear.h ../newton.cpp ../linear.cpp linear_model_matlab.c \
 -		../blas/daxpy.c ../blas/ddot.c ../blas/dnrm2.c ../blas/dscal.c
 +		$(nil)
- 	$(MEX) $(MEX_OPTION) predict.c ../tron.cpp ../linear.cpp linear_model_matlab.c \
+ 	$(MEX) $(MEX_OPTION) predict.c ../newton.cpp ../linear.cpp linear_model_matlab.c \
 -		../blas/daxpy.c ../blas/ddot.c ../blas/dnrm2.c ../blas/dscal.c
 +		-lblas
  

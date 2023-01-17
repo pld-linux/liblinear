@@ -1,24 +1,60 @@
---- liblinear-2.1/python/liblinear.py.orig	2015-09-27 00:03:39.000000000 +0200
-+++ liblinear-2.1/python/liblinear.py	2017-01-28 23:38:33.691264075 +0100
-@@ -1,5 +1,3 @@
--#!/usr/bin/env python
--
- from ctypes import *
- from ctypes.util import find_library
- from os import path
---- liblinear-2.1/python/liblinearutil.py.orig	2015-09-27 00:03:40.000000000 +0200
-+++ liblinear-2.1/python/liblinearutil.py	2017-01-28 23:38:44.447930619 +0100
-@@ -1,5 +1,3 @@
--#!/usr/bin/env python
--
- import os, sys
- sys.path = [os.path.dirname(os.path.abspath(__file__))] + sys.path
- from liblinear import *
---- liblinear-2.30/python/commonutil.py.orig	2019-03-20 18:28:22.000000000 +0100
-+++ liblinear-2.30/python/commonutil.py	2019-12-25 13:22:28.729573432 +0100
+--- liblinear-2.45/python/liblinear/commonutil.py.orig	2022-08-11 09:26:17.000000000 +0200
++++ liblinear-2.45/python/liblinear/commonutil.py	2023-01-17 21:00:29.844885280 +0100
 @@ -1,5 +1,3 @@
 -#!/usr/bin/env python
 -
  from __future__ import print_function
  from array import array
  import sys
+--- liblinear-2.45/python/liblinear/liblinear.py.orig	2022-08-11 09:26:18.000000000 +0200
++++ liblinear-2.45/python/liblinear/liblinear.py	2023-01-17 21:00:59.301392367 +0100
+@@ -1,5 +1,3 @@
+-#!/usr/bin/env python
+-
+ from ctypes import *
+ from ctypes.util import find_library
+ from os import path
+@@ -25,10 +23,7 @@ __all__ = ['liblinear', 'feature_node',
+            'print_null']
+ 
+ try:
+-    dirname = path.dirname(path.abspath(__file__))
+-    dynamic_lib_name = 'clib.cp*'
+-    path_to_so = glob(path.join(dirname, dynamic_lib_name))[0]
+-    liblinear = CDLL(path_to_so)
++    liblinear = CDLL("liblinear.so.5")
+ except:
+     try :
+         if sys.platform == 'win32':
+--- liblinear-2.45/python/liblinear/liblinearutil.py.orig	2022-08-11 09:26:18.000000000 +0200
++++ liblinear-2.45/python/liblinear/liblinearutil.py	2023-01-17 21:01:09.311338139 +0100
+@@ -1,5 +1,3 @@
+-#!/usr/bin/env python
+-
+ import os, sys
+ from .liblinear import *
+ from .liblinear import __all__ as liblinear_all
+--- liblinear-2.45/python/setup.py.orig	2022-08-11 09:26:18.000000000 +0200
++++ liblinear-2.45/python/setup.py	2023-01-17 21:31:10.778245422 +0100
+@@ -84,9 +84,6 @@ class CleanCommand(clean_cmd):
+                 rmtree(f)
+ 
+ def main():
+-    if not path.exists(cpp_dir):
+-        create_cpp_source()
+-
+     with open("README") as f:
+         long_description = f.read()
+ 
+@@ -101,11 +98,6 @@ def main():
+         author_email="cjlin@csie.ntu.edu.tw",
+         url="https://www.csie.ntu.edu.tw/~cjlin/liblinear",
+         install_requires=["scipy"],
+-        ext_modules=[
+-            Extension(
+-                "{}.{}".format(PACKAGE_DIR, dynamic_lib_name), **kwargs_for_extension
+-            )
+-        ],
+         cmdclass={"clean": CleanCommand},
+     )
+ 
