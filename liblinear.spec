@@ -155,6 +155,8 @@ install matlab/*.mex $RPM_BUILD_ROOT%{octave_oct_dir}/liblinear
 %if %{with python2}
 cd python
 %py_install
+
+%py_postclean
 cd ..
 %endif
 
