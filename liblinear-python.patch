@@ -34,21 +34,21 @@
  import os, sys
  from .liblinear import *
  from .liblinear import __all__ as liblinear_all
---- liblinear-2.45/python/setup.py.orig	2022-08-11 09:26:18.000000000 +0200
-+++ liblinear-2.45/python/setup.py	2023-01-17 21:31:10.778245422 +0100
-@@ -84,9 +84,6 @@ class CleanCommand(clean_cmd):
+--- liblinear-2.47/python/setup.py.orig	2024-02-24 08:30:08.070312591 +0100
++++ liblinear-2.47/python/setup.py	2024-02-24 08:46:01.101816242 +0100
+@@ -89,9 +89,6 @@ class CleanCommand(clean_cmd):
                  rmtree(f)
  
  def main():
 -    if not path.exists(cpp_dir):
 -        create_cpp_source()
 -
-     with open("README") as f:
-         long_description = f.read()
+     if not path.exists(license_file):
+         copyfile(license_source, license_file)
  
-@@ -101,11 +98,6 @@ def main():
-         author_email="cjlin@csie.ntu.edu.tw",
+@@ -110,11 +107,6 @@ def main():
          url="https://www.csie.ntu.edu.tw/~cjlin/liblinear",
+         license=license_name,
          install_requires=["scipy"],
 -        ext_modules=[
 -            Extension(

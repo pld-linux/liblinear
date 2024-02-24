@@ -1,29 +1,26 @@
---- liblinear-2.45/Makefile.orig	2023-01-17 21:01:39.637840513 +0100
-+++ liblinear-2.45/Makefile	2023-01-17 21:05:06.673385572 +0100
-@@ -8,18 +8,21 @@ OS = $(shell uname)
+--- liblinear-2.47/Makefile.orig	2024-02-24 08:46:26.145013905 +0100
++++ liblinear-2.47/Makefile	2024-02-24 09:27:57.268185000 +0100
+@@ -13,14 +13,17 @@ endif
  
  all: train predict
  
 -lib: linear.o newton.o blas/blas.a
+-	$(CXX) $(SHARED_LIB_FLAG) linear.o newton.o blas/blas.a -o liblinear.so.$(SHVER)
 +lib: liblinear.so
-+
-+liblinear.so: linear.o newton.o
- 	if [ "$(OS)" = "Darwin" ]; then \
- 		SHARED_LIB_FLAG="-dynamiclib -Wl,-install_name,liblinear.so.$(SHVER)"; \
- 	else \
- 		SHARED_LIB_FLAG="-shared -Wl,-soname,liblinear.so.$(SHVER)"; \
- 	fi; \
--	$(CXX) $${SHARED_LIB_FLAG} linear.o newton.o blas/blas.a -o liblinear.so.$(SHVER)
-+	$(CXX) $${SHARED_LIB_FLAG} linear.o newton.o -o liblinear.so.$(SHVER) $(LIBS) ; \
-+	ln -sf liblinear.so.$(SHVER) liblinear.so
  
 -train: newton.o linear.o train.c blas/blas.a
 -	$(CXX) $(CFLAGS) -o train train.c newton.o linear.o $(LIBS)
-+train: liblinear.so train.c
-+	$(CXX) $(CFLAGS) -o train train.c -L. -llinear $(LIBS)
++liblinear.so: linear.o newton.o
++	$(CXX) $(SHARED_LIB_FLAG) linear.o newton.o -o liblinear.so.$(SHVER) $(LIBS) ; \
++	ln -sf liblinear.so.$(SHVER) liblinear.so
  
 -predict: newton.o linear.o predict.c blas/blas.a
+-	$(CXX) $(CFLAGS) -o predict predict.c newton.o linear.o $(LIBS)
++train: liblinear.so train.c
++	$(CXX) $(CFLAGS) -o train train.c -L. -llinear $(LIBS)
++
 +predict: liblinear.so predict.c
- 	$(CXX) $(CFLAGS) -o predict predict.c newton.o linear.o $(LIBS)
++	$(CXX) $(CFLAGS) -o predict predict.c -L. -llinear $(LIBS)
  
  newton.o: newton.cpp newton.h
+ 	$(CXX) $(CFLAGS) -c -o newton.o newton.cpp
