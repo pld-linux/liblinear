@@ -26,7 +26,9 @@ BuildRequires:	blas-devel
 BuildRequires:	libstdc++-devel
 %{?with_octave:BuildRequires:	octave-devel}
 %{?with_python2:BuildRequires:	python-devel >= 1:2.7}
+%{?with_python2:BuildRequires:	python-setuptools}
 %{?with_python3:BuildRequires:	python3-devel >= 1:3.5}
+%{?with_python3:BuildRequires:	python3-setuptools}
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.714
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
