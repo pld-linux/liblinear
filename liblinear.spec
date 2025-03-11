@@ -13,7 +13,7 @@ Summary:	LIBLINEAR - a Library for Large Linear Classification
 Summary(pl.UTF-8):	LIBLINEAR - biblioteka do liniowej klasyfikacji dużych danych
 Name:		liblinear
 Version:	2.47
-Release:	
+Release:	2
 License:	BSD
 Group:		Libraries
 Source0:	https://www.csie.ntu.edu.tw/~cjlin/liblinear/%{name}-%{version}.tar.gz
@@ -43,7 +43,7 @@ linear classification and regression. It currently supports:
 - L1-regularized L2-loss support vector classification/L1-regularized
   logistic regression
 - L2-regularized L2-loss support vector regression/L1-loss support
-  vector regression. 
+  vector regression.
 
 %description -l pl.UTF-8
 LIBLINEAR to prosty pakiet do rozwiązywania zagadnień regularnej
