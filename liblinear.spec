@@ -13,7 +13,7 @@ Summary:	LIBLINEAR - a Library for Large Linear Classification
 Summary(pl.UTF-8):	LIBLINEAR - biblioteka do liniowej klasyfikacji dużych danych
 Name:		liblinear
 Version:	2.47
-Release:	2
+Release:	3
 License:	BSD
 Group:		Libraries
 Source0:	https://www.csie.ntu.edu.tw/~cjlin/liblinear/%{name}-%{version}.tar.gz
