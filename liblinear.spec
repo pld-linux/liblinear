@@ -12,12 +12,12 @@
 Summary:	LIBLINEAR - a Library for Large Linear Classification
 Summary(pl.UTF-8):	LIBLINEAR - biblioteka do liniowej klasyfikacji dużych danych
 Name:		liblinear
-Version:	2.47
-Release:	3
+Version:	2.49
+Release:	1
 License:	BSD
 Group:		Libraries
 Source0:	https://www.csie.ntu.edu.tw/~cjlin/liblinear/%{name}-%{version}.tar.gz
-# Source0-md5:	5f332f5f965d4ccb2c35a594abd6ec1d
+# Source0-md5:	43361775e2b0231f101d36d39cda110a
 Patch0:		%{name}-python.patch
 Patch1:		%{name}-make.patch
 Patch2:		%{name}-matlab.patch
@@ -179,7 +179,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYRIGHT README
 %attr(755,root,root) %{_bindir}/liblinear-predict
 %attr(755,root,root) %{_bindir}/liblinear-train
-%attr(755,root,root) %{_libdir}/liblinear.so.5
+%attr(755,root,root) %{_libdir}/liblinear.so.6
 
 %files devel
 %defattr(644,root,root,755)
